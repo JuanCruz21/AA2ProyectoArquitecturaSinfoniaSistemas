@@ -46,7 +46,7 @@ uv sync --extra dev
 uv run python init_db.py
 
 # 3. Arranca la API
-uv run uvicorn main:app --reload
+uv run uvicorn main:app --reload --reload-exclude '.venv/*'
 ```
 
 No hace falta configurar nada: cada carpeta trae su `.env` ya listo para desarrollo.
@@ -302,6 +302,12 @@ Solo hay que tocarla si arranca el backend en otro puerto. El valor se incrusta 
 ---
 
 ## Solución de problemas
+
+**`Error loading ASGI app. Could not import module "app.main"`.**
+El módulo está mal escrito en el comando. El punto de entrada es `backend/main.py`, así que se escribe **`main:app`**, no `app.main`: la carpeta `app/` es el paquete con las cuatro capas, no el módulo de arranque. Desde `backend/`, el comando correcto es `uv run uvicorn main:app --reload --reload-exclude '.venv/*'`, o su atajo `uv run python main.py`.
+
+**La consola se llena de `WatchFiles detected changes in '.venv/...'` y recarga sin parar.**
+El recargador está vigilando el entorno virtual: cada archivo que `uv` escribe al instalar dependencias dispara una recarga. Lo evita `--reload-exclude '.venv/*'`, que ya viene en el comando de arranque.
 
 **«No se pudo conectar con el servidor» al iniciar sesión.**
 El backend no está en marcha o está en otro puerto. Compruebe con `curl http://localhost:8000/health`; debe responder `{"status":"healthy"}`.

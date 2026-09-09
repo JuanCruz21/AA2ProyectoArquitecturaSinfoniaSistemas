@@ -122,4 +122,13 @@ if __name__ == "__main__":
     # Permite ejecutar `python main.py` ademas de `uvicorn main:app`.
     import uvicorn
 
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=settings.debug)
+    uvicorn.run(
+        "main:app",
+        host="127.0.0.1",
+        port=8000,
+        reload=settings.debug,
+        # Sin esto, el recargador vigila tambien `.venv`. Al instalar o
+        # actualizar dependencias con el servidor en marcha, cada archivo
+        # escrito ahi dispara una recarga y la consola se llena de avisos.
+        reload_excludes=[".venv/*", "*.db"],
+    )

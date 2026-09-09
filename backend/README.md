@@ -11,8 +11,12 @@ Para la visión de conjunto del proyecto consulte el `README.md` de la raíz; pa
 ```bash
 uv sync --extra dev          # instala dependencias y crea .venv
 uv run python init_db.py     # crea la base de datos con datos de prueba
-uv run uvicorn main:app --reload
+uv run uvicorn main:app --reload --reload-exclude '.venv/*'
 ```
+
+El modulo es **`main:app`**, no `app.main`: el punto de entrada es `backend/main.py`,
+y `app/` es el paquete con las cuatro capas. Como atajo equivalente puede usar
+`uv run python main.py`, que ya arranca con esa configuracion.
 
 La API queda en http://localhost:8000 y la documentación interactiva en http://localhost:8000/docs.
 
@@ -39,7 +43,8 @@ Las crea `init_db.py`. Contraseña común: **`password123`**.
 |---|---|
 | Instalar dependencias | `uv sync --extra dev` |
 | Cargar datos de prueba | `uv run python init_db.py` |
-| Arrancar en desarrollo | `uv run uvicorn main:app --reload` |
+| Arrancar en desarrollo | `uv run uvicorn main:app --reload --reload-exclude '.venv/*'` |
+| Arrancar (atajo equivalente) | `uv run python main.py` |
 | Ejecutar las pruebas | `uv run pytest -v` |
 | Revisar el código | `uv run ruff check .` |
 | Corregir lo automatizable | `uv run ruff check --fix .` |
