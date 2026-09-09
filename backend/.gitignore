@@ -1,0 +1,22 @@
+# Entorno virtual y dependencias
+.venv/
+venv/
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Base de datos local (se regenera con `uv run python init_db.py`)
+*.db
+*.sqlite3
+
+# Configuracion con datos sensibles.
+# `.env.example` si se versiona: es la plantilla sin secretos.
+.env
+
+# Herramientas
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/

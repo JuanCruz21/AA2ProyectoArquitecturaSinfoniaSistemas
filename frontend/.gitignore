@@ -1,0 +1,20 @@
+# Dependencias
+node_modules/
+
+# Compilacion de Next.js
+.next/
+out/
+build/
+
+# Configuracion local.
+# `.env.example` si se versiona: es la plantilla sin secretos.
+.env
+.env.local
+
+# Archivos generados
+next-env.d.ts
+*.tsbuildinfo
+
+# Registros
+npm-debug.log*
+yarn-error.log*

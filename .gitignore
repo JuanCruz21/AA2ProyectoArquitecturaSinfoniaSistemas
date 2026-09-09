@@ -1,0 +1,9 @@
+# Reglas comunes al proyecto.
+# Cada carpeta tiene ademas su propio .gitignore con lo especifico de su stack:
+#   backend/.gitignore   -> entorno virtual, cache de Python, base de datos
+#   frontend/.gitignore  -> node_modules, compilacion de Next.js
+
+# Editores
+.vscode/
+.idea/
+*.swp

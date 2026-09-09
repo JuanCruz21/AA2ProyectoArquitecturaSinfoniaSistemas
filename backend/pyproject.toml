@@ -1,0 +1,52 @@
+[project]
+name = "labcloud"
+version = "1.0.0"
+description = "LabCloud - Sistema de gestion de analisis de laboratorio (arquitectura por capas + servicios)"
+requires-python = ">=3.10"
+
+# Dependencias de ejecucion.
+# Se fijan versiones exactas para que el proyecto sea reproducible: cualquier
+# companero que clone el repositorio obtendra exactamente el mismo entorno.
+dependencies = [
+    "fastapi==0.115.6",         # Framework web / API Gateway
+    "uvicorn[standard]==0.34.0", # Servidor ASGI
+    "pydantic==2.10.4",          # Validacion de datos (DTOs)
+    "pydantic-settings==2.7.0",  # Carga de configuracion desde .env
+    "email-validator==2.2.0",    # Validacion del tipo EmailStr
+    "SQLAlchemy==2.0.36",        # ORM sobre SQLite
+    "PyJWT==2.10.1",             # Firma y verificacion de JSON Web Tokens
+    "bcrypt==4.2.1",             # Hash de contrasenas
+    "python-multipart==0.0.20",  # Soporte de formularios en FastAPI
+]
+
+[project.optional-dependencies]
+# Dependencias solo de desarrollo: se instalan con `uv sync --extra dev`.
+dev = [
+    "pytest==8.3.4",
+    "httpx==0.28.1",  # Cliente HTTP que usa TestClient de FastAPI
+    "ruff==0.8.4",    # Linter y formateador
+]
+
+[tool.uv]
+# LabCloud es una aplicacion, no una libreria que se publique. Con esta opcion
+# `uv sync` instala solo las dependencias y no intenta empaquetar el proyecto.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Anade la carpeta `backend/` al path para que las pruebas importen `app` y `main`.
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# E/W: estilo PEP 8 · F: errores reales (imports sin usar, nombres indefinidos)
+# I: orden de imports · B: fallos frecuentes · UP: sintaxis moderna de Python
+select = ["E", "W", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.flake8-bugbear]
+# `Depends()` y `Query()` en los valores por defecto es el modo previsto de
+# trabajar con FastAPI, no el fallo que B008 pretende detectar.
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Path"]
